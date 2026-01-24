@@ -100,7 +100,7 @@ class SubTask(models.Model):
     task = models.ForeignKey(Task, related_name='subtasks', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.task.title
+        return self.title
     
     def __repr__(self):
-        return self.task.title 
+        return self.title 

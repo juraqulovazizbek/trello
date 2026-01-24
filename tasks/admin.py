@@ -52,7 +52,7 @@ class CategoryModelAdmin(admin.ModelAdmin):
         (
             'Main Information',
             {
-                "fields": ["name", "is_active"],
+                "fields": ["name", "slug", "is_active"],
             },
         ),
         (
@@ -66,6 +66,8 @@ class CategoryModelAdmin(admin.ModelAdmin):
     actions = ('mark_as_active', 'mark_as_inactive')
     list_per_page = 10
     ordering = ('is_active',)
+    prepopulated_fields = {"slug": ["name"]}
+    list_editable = ('is_active',)
 
     @admin.display(description='Description')
     def display_description(self, obj):
@@ -107,6 +109,34 @@ class CategoryModelAdmin(admin.ModelAdmin):
         )
 
 
+
+class SubTaskTabularInline(admin.TabularInline):
+    model = SubTask
+    extra = 1
+
+class AttechmentTabularInline(admin.TabularInline):
+    model = Attechment
+    extra = 1
+
+
 @admin.register(Task)
 class TaskModelAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug')
+    inlines = [SubTaskTabularInline, AttechmentTabularInline]
+    fieldsets = [
+        (
+            'Main Information',
+            {
+                "fields": ["title",  "due_date", "categories"],
+            },
+        ),
+        (
+            "Additional Information",
+            {
+                "classes": ["collapse"],
+                "fields": ["description", "user", "status", "priority"],
+            },
+        )
+    ]
+
+
+admin.site.register(SubTask)
