@@ -137,6 +137,3 @@ class TaskModelAdmin(admin.ModelAdmin):
             },
         )
     ]
-
-
-admin.site.register(SubTask)
